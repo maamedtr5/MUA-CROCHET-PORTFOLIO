@@ -60,12 +60,12 @@ export default function NewMakeupPost() {
   }
 
   return (
-    <form style={{ background: 'var(--panel)', border: '1px solid var(--line)', borderRadius: 10, padding: 32 }}>
+    <form className="admin-panel">
       <h2 style={{ fontFamily: 'var(--serif)', fontWeight: 400, fontSize: '1.4rem', margin: '0 0 24px' }}>
         {id ? 'Edit makeup post' : 'New makeup post'}
       </h2>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 22 }}>
+      <div className="admin-form-grid">
         <Field label="Title"><input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g. Bridal glam, Adjoa" style={inputStyle} /></Field>
         <Field label="Event type"><input value={eventType} onChange={(e) => setEventType(e.target.value)} placeholder="e.g. bridal, editorial, glam" style={inputStyle} /></Field>
 

@@ -56,7 +56,7 @@ export default function WorkDetail() {
       )}
 
       {!isMakeup && (
-        <dl style={{ display: 'flex', gap: 32, marginTop: 24, fontSize: '0.9rem', color: 'var(--bark)' }}>
+        <dl style={{ display: 'flex', gap: 32, flexWrap: 'wrap', marginTop: 24, fontSize: '0.9rem', color: 'var(--bark)' }}>
           {(work as CrochetWork).size && <div><dt style={{ fontWeight: 700 }}>Size</dt><dd>{(work as CrochetWork).size}</dd></div>}
           {(work as CrochetWork).availability && <div><dt style={{ fontWeight: 700 }}>Availability</dt><dd>{(work as CrochetWork).availability}</dd></div>}
           {(work as CrochetWork).price_note && <div><dt style={{ fontWeight: 700 }}>Pricing</dt><dd>{(work as CrochetWork).price_note}</dd></div>}

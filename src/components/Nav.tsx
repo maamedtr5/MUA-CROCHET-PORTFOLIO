@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 const linkStyle = ({ isActive }: { isActive: boolean }): React.CSSProperties => ({
@@ -8,6 +9,8 @@ const linkStyle = ({ isActive }: { isActive: boolean }): React.CSSProperties => 
 });
 
 export default function Nav() {
+  const [open, setOpen] = useState(false);
+
   return (
     <header
       style={{
@@ -23,15 +26,29 @@ export default function Nav() {
         className="wrap"
         style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '18px 32px' }}
       >
-        <NavLink to="/" style={{ fontFamily: 'var(--script)', fontSize: '2rem', color: 'var(--ink)', textDecoration: 'none' }}>
+        <NavLink
+          to="/"
+          onClick={() => setOpen(false)}
+          style={{ fontFamily: 'var(--script)', fontSize: '2rem', color: 'var(--ink)', textDecoration: 'none' }}
+        >
           Adorn
         </NavLink>
-        <ul style={{ display: 'flex', gap: 34, listStyle: 'none', margin: 0, padding: 0 }}>
-          <li><NavLink to="/" style={linkStyle} end>Home</NavLink></li>
-          <li><NavLink to="/about" style={linkStyle}>About</NavLink></li>
-          <li><NavLink to="/portfolio" style={linkStyle}>Portfolio</NavLink></li>
-          <li><NavLink to="/contact" style={linkStyle}>Contact</NavLink></li>
+
+        <ul className={`nav-links${open ? ' is-open' : ''}`}>
+          <li><NavLink to="/" style={linkStyle} onClick={() => setOpen(false)} end>Home</NavLink></li>
+          <li><NavLink to="/about" style={linkStyle} onClick={() => setOpen(false)}>About</NavLink></li>
+          <li><NavLink to="/portfolio" style={linkStyle} onClick={() => setOpen(false)}>Portfolio</NavLink></li>
+          <li><NavLink to="/contact" style={linkStyle} onClick={() => setOpen(false)}>Contact</NavLink></li>
         </ul>
+
+        <button
+          className="nav-toggle"
+          aria-label={open ? 'Close menu' : 'Open menu'}
+          aria-expanded={open}
+          onClick={() => setOpen((v) => !v)}
+        >
+          {open ? '✕' : '☰'}
+        </button>
       </nav>
     </header>
   );

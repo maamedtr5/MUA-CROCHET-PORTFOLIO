@@ -10,7 +10,7 @@ export default function About() {
   }, []);
 
   return (
-    <section className="wrap" style={{ padding: '100px 32px', display: 'grid', gridTemplateColumns: '0.85fr 1.15fr', gap: 64, alignItems: 'center' }}>
+    <section className="wrap about-grid">
       {content?.image ? (
         <img src={content.image} alt="" style={{ aspectRatio: '4/5', objectFit: 'cover', borderRadius: 2 }} />
       ) : (

@@ -66,12 +66,12 @@ export default function NewCrochetPost() {
   }
 
   return (
-    <form onSubmit={(e: FormEvent) => e.preventDefault()} style={{ background: 'var(--panel)', border: '1px solid var(--line)', borderRadius: 10, padding: 32 }}>
+    <form onSubmit={(e: FormEvent) => e.preventDefault()} className="admin-panel">
       <h2 style={{ fontFamily: 'var(--serif)', fontWeight: 400, fontSize: '1.4rem', margin: '0 0 24px' }}>
         {id ? 'Edit crochet post' : 'New crochet post'}
       </h2>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 22 }}>
+      <div className="admin-form-grid">
         <Field label="Title"><input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g. Ridge-stitch tote" style={inputStyle} /></Field>
         <Field label="Materials"><input value={materials} onChange={(e) => setMaterials(e.target.value)} placeholder="e.g. cotton yarn, wood handles" style={inputStyle} /></Field>
 

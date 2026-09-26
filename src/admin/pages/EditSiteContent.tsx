@@ -48,7 +48,7 @@ function SiteContentEditor({ section, label }: { section: SiteContentSection; la
   }
 
   return (
-    <div style={panelStyle}>
+    <div className="admin-panel" style={panelStyle}>
       <h2 style={headingStyle}>{label}</h2>
       <div style={{ marginBottom: 18 }}>
         <label style={labelStyle}>Heading</label>
@@ -94,7 +94,7 @@ function SocialLinksEditor() {
   }
 
   return (
-    <div style={panelStyle}>
+    <div className="admin-panel" style={panelStyle}>
       <h2 style={headingStyle}>Social links</h2>
       {links.map((l) => (
         <div key={l.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid var(--line)' }}>
@@ -102,7 +102,7 @@ function SocialLinksEditor() {
           <button type="button" onClick={() => remove(l.id)} style={{ border: 'none', background: 'none', color: 'var(--rust-bold)', cursor: 'pointer' }}>Remove</button>
         </div>
       ))}
-      <div style={{ display: 'flex', gap: 10, marginTop: 16 }}>
+      <div style={{ display: 'flex', gap: 10, marginTop: 16, flexWrap: 'wrap' }}>
         <input placeholder="Platform (e.g. instagram)" value={platform} onChange={(e) => setPlatform(e.target.value)} style={{ ...inputStyle, flex: 1 }} />
         <input placeholder="URL" value={url} onChange={(e) => setUrl(e.target.value)} style={{ ...inputStyle, flex: 2 }} />
         <button type="button" onClick={add} className="btn btn-line">Add</button>
@@ -138,10 +138,10 @@ function ContactFieldsEditor() {
   }
 
   return (
-    <div style={panelStyle}>
+    <div className="admin-panel" style={panelStyle}>
       <h2 style={headingStyle}>Contact form fields</h2>
       {fields.map((f, i) => (
-        <div key={i} style={{ display: 'flex', gap: 10, marginBottom: 10, alignItems: 'center' }}>
+        <div key={i} style={{ display: 'flex', gap: 10, marginBottom: 10, alignItems: 'center', flexWrap: 'wrap' }}>
           <input value={f.label} onChange={(e) => updateField(i, { label: e.target.value })} placeholder="Label" style={{ ...inputStyle, flex: 2 }} />
           <select value={f.type} onChange={(e) => updateField(i, { type: e.target.value })} style={{ ...inputStyle, flex: 1 }}>
             <option value="text">Text</option>
@@ -164,7 +164,7 @@ function ContactFieldsEditor() {
   );
 }
 
-const panelStyle: React.CSSProperties = { background: 'var(--panel)', border: '1px solid var(--line)', borderRadius: 10, padding: 28 };
+const panelStyle: React.CSSProperties = { background: 'var(--panel)', border: '1px solid var(--line)', borderRadius: 10 };
 const headingStyle: React.CSSProperties = { fontFamily: 'var(--serif)', fontWeight: 400, fontSize: '1.3rem', margin: '0 0 20px' };
 const labelStyle: React.CSSProperties = { display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--bark)', marginBottom: 7 };
 const inputStyle: React.CSSProperties = {

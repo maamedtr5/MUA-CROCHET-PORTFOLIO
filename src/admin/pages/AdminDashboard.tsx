@@ -31,8 +31,8 @@ export default function AdminDashboard() {
   }, []);
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '250px 1fr', minHeight: '100vh' }}>
-      <aside style={{ background: 'var(--panel)', borderRight: '1px solid var(--line)', padding: '28px 22px', display: 'flex', flexDirection: 'column' }}>
+    <div className="admin-shell">
+      <aside className="admin-sidebar" style={{ background: 'var(--panel)', borderRight: '1px solid var(--line)', display: 'flex', flexDirection: 'column' }}>
         <div style={{ fontFamily: 'var(--script)', fontSize: '1.7rem', marginBottom: 36 }}>Adorn</div>
         <nav style={{ display: 'flex', flexDirection: 'column', gap: 4, flex: 1 }}>
           {navItems.map((item) => (
@@ -51,18 +51,18 @@ export default function AdminDashboard() {
             </NavLink>
           ))}
         </nav>
-        <button onClick={() => signOut()} style={{ background: 'none', border: 'none', color: 'var(--bark-soft)', fontSize: '0.82rem', textAlign: 'left', cursor: 'pointer', marginTop: 20 }}>
+        <button onClick={() => signOut()} className="admin-logout" style={{ background: 'none', border: 'none', color: 'var(--bark-soft)', fontSize: '0.82rem', textAlign: 'left', cursor: 'pointer', marginTop: 20 }}>
           Log out
         </button>
       </aside>
 
-      <main style={{ padding: '40px 48px' }}>
+      <main className="admin-main">
         <div style={{ marginBottom: 36 }}>
           <h1 style={{ fontFamily: 'var(--serif)', fontWeight: 300, fontSize: '2rem', margin: '0 0 4px' }}>Welcome back</h1>
           <p style={{ color: 'var(--bark-soft)', fontSize: '0.9rem', margin: 0 }}>Here's what's happening across your site.</p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 40 }}>
+        <div className="admin-stats-grid">
           <StatCard num={counts.published} label="Published works" />
           <StatCard num={counts.drafts} label="Drafts" />
           <StatCard num={counts.submissions} label="Submissions" />

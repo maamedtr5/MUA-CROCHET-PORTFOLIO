@@ -17,7 +17,7 @@ export default function Submissions() {
   }
 
   return (
-    <div style={{ background: 'var(--panel)', border: '1px solid var(--line)', borderRadius: 10, overflow: 'hidden' }}>
+    <div className="table-scroll" style={{ background: 'var(--panel)', border: '1px solid var(--line)', borderRadius: 10 }}>
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr>

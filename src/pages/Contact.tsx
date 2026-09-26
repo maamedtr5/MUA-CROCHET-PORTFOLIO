@@ -14,7 +14,7 @@ export default function Contact() {
   }, []);
 
   return (
-    <section className="wrap" style={{ padding: '100px 32px', display: 'grid', gridTemplateColumns: '0.9fr 1.1fr', gap: 64 }}>
+    <section className="wrap contact-grid">
       <div>
         <h2 style={{ fontFamily: 'var(--serif)', fontWeight: 300, fontSize: '2.2rem', margin: '0 0 20px' }}>
           {content?.heading ?? 'Say hello'}

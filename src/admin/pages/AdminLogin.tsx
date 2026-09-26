@@ -21,7 +21,7 @@ export default function AdminLogin() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+    <div className="login-screen">
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 40 }}>
         <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: 380 }}>
           <div style={{ fontFamily: 'var(--script)', fontSize: '2.2rem', marginBottom: 6 }}>
@@ -71,8 +71,8 @@ export default function AdminLogin() {
         </form>
       </div>
       <div
+        className="login-visual"
         style={{
-          position: 'relative',
           background:
             'repeating-linear-gradient(100deg, #6B6B2E 0px, #6B6B2E 7px, #57571F 7px, #57571F 14px)',
         }}

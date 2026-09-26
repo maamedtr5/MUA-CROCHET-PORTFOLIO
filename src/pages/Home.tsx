@@ -29,12 +29,12 @@ export default function Home() {
   return (
     <>
       <section
+        className="hero-section"
         style={{
           display: 'grid',
           gridTemplateColumns: '1fr',
           minHeight: '70vh',
           alignItems: 'center',
-          padding: '80px 32px',
         }}
       >
         <div style={{ maxWidth: 640 }}>
