@@ -6,3 +6,9 @@ export type ContactFormConfig = Database['public']['Tables']['contact_form_confi
 export type ContactSubmission = Database['public']['Tables']['contact_submissions']['Row'];
 
 export type SiteContentSection = 'homepage_intro' | 'about' | 'contact_info';
+export type ContactFormField = {
+  key: string;
+  label: string;
+  type: string;
+  required: boolean;
+};

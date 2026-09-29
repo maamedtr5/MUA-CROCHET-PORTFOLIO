@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { getSiteContent, updateSiteContent } from '@/lib/queries/siteContent';
-import { listSocialLinks, createSocialLink, updateSocialLink, deleteSocialLink } from '@/lib/queries/socialLinks';
+import { listSocialLinks, createSocialLink, deleteSocialLink } from '@/lib/queries/socialLinks';
 import { getContactFormConfig, updateContactFormConfig } from '@/lib/queries/contactSubmissions';
 import ImageUploader from '@/admin/components/ImageUploader';
 import type { SiteContentSection, SocialLink } from '@/types/content';
-
+import type {  } from '@/types/content';
 const SECTIONS: { key: SiteContentSection; label: string }[] = [
   { key: 'homepage_intro', label: 'Homepage intro' },
   { key: 'about', label: 'About' },
@@ -116,7 +116,9 @@ function ContactFieldsEditor() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    getContactFormConfig().then((c) => c && setFields(c.fields));
+    getContactFormConfig().then((c) => {
+      if (c) setFields((c.fields ?? []) as unknown as typeof fields);
+    });
   }, []);
 
   function updateField(i: number, changes: Partial<(typeof fields)[number]>) {

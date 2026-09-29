@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { createCrochetWork, getCrochetWork, updateCrochetWork } from '@/lib/queries/crochetWorks';
 import ImageUploader from '@/admin/components/ImageUploader';
 import TagInput from '@/admin/components/TagInput';
-import type { WorkStatus, CrochetAvailability } from '@/types/supabase';
+import type { WorkStatus, CrochetAvailability } from '@/types/enum';
 
 export default function NewCrochetPost() {
   const { id } = useParams<{ id?: string }>();
@@ -28,7 +28,7 @@ export default function NewCrochetPost() {
       setTitle(work.title);
       setMaterials(work.materials ?? '');
       setSize(work.size ?? '');
-      setAvailability(work.availability ?? 'made_to_order');
+      setAvailability((work.availability ?? 'made_to_order') as CrochetAvailability);
       setPriceNote(work.price_note ?? '');
       setDescription(work.description ?? '');
       setImages(work.images);

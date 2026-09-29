@@ -4,8 +4,7 @@ import { createMakeupWork, getMakeupWork, updateMakeupWork } from '@/lib/queries
 import ImageUploader from '@/admin/components/ImageUploader';
 import TagInput from '@/admin/components/TagInput';
 import { useEffect } from 'react';
-import type { WorkStatus } from '@/types/supabase';
-
+import type { WorkStatus } from '@/types/enum';
 // Handles both "New Makeup Post" and editing an existing one (via an :id param).
 export default function NewMakeupPost() {
   const { id } = useParams<{ id?: string }>();

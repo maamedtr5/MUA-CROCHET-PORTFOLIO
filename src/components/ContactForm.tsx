@@ -1,6 +1,7 @@
 import { useEffect, useState, FormEvent } from 'react';
 import { getContactFormConfig, submitContactForm } from '@/lib/queries/contactSubmissions';
 import type { ContactFormConfig } from '@/types/content';
+import type { ContactFormField } from '@/types/content';
 
 const fieldStyle: React.CSSProperties = {
   width: '100%',
@@ -47,7 +48,7 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      {config.fields.map((field) => (
+      {((config.fields ?? []) as unknown as ContactFormField[]).map((field) => (
         <div key={field.key} style={{ marginBottom: 20 }}>
           <label style={{ display: 'block', fontFamily: 'var(--sans)', fontSize: '0.8rem', fontWeight: 700, color: 'var(--bark)', marginBottom: 8 }}>
             {field.label}

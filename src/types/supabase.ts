@@ -1,105 +1,365 @@
-// Hand-written to match supabase/migrations/0001_initial_schema.sql.
-// Once the project is linked, replace this with the real generated file via:
-//   npx supabase gen types typescript --project-id <ref> > src/types/supabase.ts
+﻿export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
 
-export type WorkStatus = 'draft' | 'published';
-export type CrochetAvailability = 'made_to_order' | 'one_of_one' | 'sold';
-
-export interface Database {
+export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "14.5"
+  }
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
-      makeup_works: {
-        Row: {
-          id: string;
-          title: string;
-          event_type: string | null;
-          images: string[];
-          description: string | null;
-          tags: string[];
-          date: string | null;
-          featured: boolean;
-          status: WorkStatus;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: Partial<Database['public']['Tables']['makeup_works']['Row']> & {
-          title: string;
-        };
-        Update: Partial<Database['public']['Tables']['makeup_works']['Row']>;
-      };
-      crochet_works: {
-        Row: {
-          id: string;
-          title: string;
-          images: string[];
-          description: string | null;
-          materials: string | null;
-          size: string | null;
-          availability: CrochetAvailability | null;
-          price_note: string | null;
-          tags: string[];
-          date: string | null;
-          featured: boolean;
-          status: WorkStatus;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: Partial<Database['public']['Tables']['crochet_works']['Row']> & {
-          title: string;
-        };
-        Update: Partial<Database['public']['Tables']['crochet_works']['Row']>;
-      };
-      site_content: {
-        Row: {
-          section: string;
-          heading: string | null;
-          body: string | null;
-          image: string | null;
-          updated_at: string;
-        };
-        Insert: Partial<Database['public']['Tables']['site_content']['Row']> & {
-          section: string;
-        };
-        Update: Partial<Database['public']['Tables']['site_content']['Row']>;
-      };
-      social_links: {
-        Row: {
-          id: string;
-          platform: string;
-          url: string;
-          display_order: number;
-        };
-        Insert: Partial<Database['public']['Tables']['social_links']['Row']> & {
-          platform: string;
-          url: string;
-        };
-        Update: Partial<Database['public']['Tables']['social_links']['Row']>;
-      };
-      contact_submissions: {
-        Row: {
-          id: string;
-          name: string;
-          email: string;
-          message: string;
-          extra_fields: Record<string, unknown>;
-          created_at: string;
-          emailed_ok: boolean;
-        };
-        Insert: Partial<Database['public']['Tables']['contact_submissions']['Row']> & {
-          name: string;
-          email: string;
-          message: string;
-        };
-        Update: Partial<Database['public']['Tables']['contact_submissions']['Row']>;
-      };
       contact_form_config: {
         Row: {
-          id: number;
-          fields: Array<{ key: string; label: string; type: string; required: boolean }>;
-        };
-        Insert: Partial<Database['public']['Tables']['contact_form_config']['Row']>;
-        Update: Partial<Database['public']['Tables']['contact_form_config']['Row']>;
-      };
-    };
-  };
+          fields: Json
+          id: number
+        }
+        Insert: {
+          fields?: Json
+          id?: number
+        }
+        Update: {
+          fields?: Json
+          id?: number
+        }
+        Relationships: []
+      }
+      contact_submissions: {
+        Row: {
+          created_at: string
+          email: string | null
+          emailed_ok: boolean
+          extra_fields: Json
+          id: string
+          message: string | null
+          name: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          emailed_ok?: boolean
+          extra_fields?: Json
+          id?: string
+          message?: string | null
+          name?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          emailed_ok?: boolean
+          extra_fields?: Json
+          id?: string
+          message?: string | null
+          name?: string | null
+        }
+        Relationships: []
+      }
+      crochet_works: {
+        Row: {
+          availability: string | null
+          created_at: string
+          date: string | null
+          description: string | null
+          featured: boolean
+          id: string
+          images: string[]
+          materials: string | null
+          price_note: string | null
+          size: string | null
+          status: string
+          tags: string[]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          availability?: string | null
+          created_at?: string
+          date?: string | null
+          description?: string | null
+          featured?: boolean
+          id?: string
+          images?: string[]
+          materials?: string | null
+          price_note?: string | null
+          size?: string | null
+          status?: string
+          tags?: string[]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          availability?: string | null
+          created_at?: string
+          date?: string | null
+          description?: string | null
+          featured?: boolean
+          id?: string
+          images?: string[]
+          materials?: string | null
+          price_note?: string | null
+          size?: string | null
+          status?: string
+          tags?: string[]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      makeup_works: {
+        Row: {
+          created_at: string
+          date: string | null
+          description: string | null
+          event_type: string | null
+          featured: boolean
+          id: string
+          images: string[]
+          status: string
+          tags: string[]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          date?: string | null
+          description?: string | null
+          event_type?: string | null
+          featured?: boolean
+          id?: string
+          images?: string[]
+          status?: string
+          tags?: string[]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          date?: string | null
+          description?: string | null
+          event_type?: string | null
+          featured?: boolean
+          id?: string
+          images?: string[]
+          status?: string
+          tags?: string[]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      site_content: {
+        Row: {
+          body: string | null
+          heading: string | null
+          image: string | null
+          section: string
+          updated_at: string
+        }
+        Insert: {
+          body?: string | null
+          heading?: string | null
+          image?: string | null
+          section: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string | null
+          heading?: string | null
+          image?: string | null
+          section?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      social_links: {
+        Row: {
+          display_order: number
+          id: string
+          platform: string
+          url: string
+        }
+        Insert: {
+          display_order?: number
+          id?: string
+          platform: string
+          url: string
+        }
+        Update: {
+          display_order?: number
+          id?: string
+          platform?: string
+          url?: string
+        }
+        Relationships: []
+      }
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      [_ in never]: never
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
 }
+
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
+
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
+
+export type Tables<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+    : never) = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      Row: infer R
+    }
+    ? R
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
+    : never
+
+export type TablesInsert<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never) = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Insert: infer I
+    }
+    ? I
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
+    : never
+
+export type TablesUpdate<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never) = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Update: infer U
+    }
+    ? U
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
+    : never
+
+export type Enums<
+  DefaultSchemaEnumNameOrOptions extends
+    | keyof DefaultSchema["Enums"]
+    | { schema: keyof DatabaseWithoutInternals },
+  EnumName extends (DefaultSchemaEnumNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    : never) = never,
+> = DefaultSchemaEnumNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
+    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof DefaultSchema["CompositeTypes"]
+    | { schema: keyof DatabaseWithoutInternals },
+  CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never) = never,
+> = PublicCompositeTypeNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
+    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+    : never
+
+export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
+  public: {
+    Enums: {},
+  },
+} as const
