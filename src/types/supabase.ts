@@ -1,4 +1,4 @@
-﻿export type Json =
+export type Json =
   | string
   | number
   | boolean
@@ -58,6 +58,7 @@ export type Database = {
         Row: {
           created_at: string
           email: string | null
+          email_error: string | null
           emailed_ok: boolean
           extra_fields: Json
           id: string
@@ -67,6 +68,7 @@ export type Database = {
         Insert: {
           created_at?: string
           email?: string | null
+          email_error?: string | null
           emailed_ok?: boolean
           extra_fields?: Json
           id?: string
@@ -76,6 +78,7 @@ export type Database = {
         Update: {
           created_at?: string
           email?: string | null
+          email_error?: string | null
           emailed_ok?: boolean
           extra_fields?: Json
           id?: string

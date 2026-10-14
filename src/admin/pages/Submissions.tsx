@@ -38,6 +38,9 @@ export default function Submissions() {
                 <span style={{ fontSize: '0.74rem', fontWeight: 700, padding: '4px 10px', borderRadius: 999, background: s.emailed_ok ? 'rgba(75,107,52,0.14)' : 'rgba(123,44,6,0.14)', color: s.emailed_ok ? '#4B6B34' : 'var(--rust-bold)' }}>
                   {s.emailed_ok ? 'Sent' : 'Failed'}
                 </span>
+                {!s.emailed_ok && s.email_error && (
+                  <div style={{ fontSize: '0.72rem', color: 'var(--bark-soft)', marginTop: 6, maxWidth: 260, wordBreak: 'break-word' }}>{s.email_error}</div>
+                )}
               </td>
               <td style={cellStyle}>
                 <button type="button" onClick={() => remove(s.id)} style={{ border: 'none', background: 'none', color: 'var(--rust-bold)', cursor: 'pointer', fontSize: '0.85rem' }}>Delete</button>

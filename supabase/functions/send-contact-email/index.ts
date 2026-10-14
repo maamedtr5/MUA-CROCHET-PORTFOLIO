@@ -79,31 +79,56 @@ Deno.serve(async (req) => {
     .map(([k, v]) => `<p><strong>${escapeHtml(k)}:</strong> ${escapeHtml(String(v))}</p>`)
     .join("");
 
-  const resendRes = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${Deno.env.get("RESEND_API_KEY")}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from: Deno.env.get("CONTACT_FROM_EMAIL") ?? "onboarding@resend.dev",
-      to: [Deno.env.get("CONTACT_TO_EMAIL")!],
-      reply_to: email,
-      subject: `New portfolio message from ${name}`,
-      html: `<p><strong>Name:</strong> ${escapeHtml(name)}</p>
+  // Brevo transactional email. Secrets (supabase secrets set ...):
+  //   BREVO_API_KEY       - Brevo > SMTP & API > API Keys
+  //   CONTACT_TO_EMAIL    - the inbox she reads (can be her Gmail)
+  //   CONTACT_FROM_EMAIL  - a sender verified in Brevo (can be the same Gmail)
+  const apiKey = Deno.env.get("BREVO_API_KEY");
+  const toEmail = Deno.env.get("CONTACT_TO_EMAIL");
+  const fromEmail = Deno.env.get("CONTACT_FROM_EMAIL") ?? toEmail;
+
+  let emailedOk = false;
+  let emailError: string | null = null;
+
+  if (!apiKey) {
+    emailError = "BREVO_API_KEY secret is not set";
+  } else if (!toEmail) {
+    emailError = "CONTACT_TO_EMAIL secret is not set";
+  } else {
+    try {
+      const res = await fetch("https://api.brevo.com/v3/smtp/email", {
+        method: "POST",
+        headers: {
+          "api-key": apiKey,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          sender: { name: "Adorn website", email: fromEmail },
+          to: [{ email: toEmail }],
+          replyTo: { email, name },
+          subject: `New portfolio message from ${name}`,
+          htmlContent: `<p><strong>Name:</strong> ${escapeHtml(name)}</p>
              <p><strong>Email:</strong> ${escapeHtml(email)}</p>
              ${extras}
              <p><strong>Message:</strong></p>
              <p>${escapeHtml(message).replace(/\n/g, "<br>")}</p>`,
-    }),
-  });
+        }),
+      });
+      emailedOk = res.ok;
+      if (!res.ok) {
+        emailError = `Brevo ${res.status}: ${(await res.text()).slice(0, 400)}`;
+      }
+    } catch (err) {
+      emailError = `Could not reach Brevo: ${err instanceof Error ? err.message : String(err)}`;
+    }
+  }
 
-  const emailedOk = resendRes.ok;
-  if (!emailedOk) console.error("Resend error:", await resendRes.text());
+  if (emailError) console.error("Email not sent:", emailError);
 
   await supabase
     .from("contact_submissions")
-    .update({ emailed_ok: emailedOk })
+    .update({ emailed_ok: emailedOk, email_error: emailError })
     .eq("id", row.id);
 
   // The message is saved either way, so tell the visitor it went through

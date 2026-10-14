@@ -32,7 +32,7 @@ export async function updateContactFormConfig(
 // ---- public: submitting the form goes through the Edge Function, not a direct
 // table insert — see supabase/functions/send-contact-email. The function writes
 // the row (using the service role key, bypassing RLS) and emails the artist via
-// Resend, then returns success/fail to the form. ----
+// Brevo, then returns success/fail to the form. ----
 
 export interface ContactSubmitPayload {
   name: string;

@@ -17,10 +17,10 @@ export default function Contact() {
     <section className="wrap contact-grid">
       <div>
         <h2 style={{ fontFamily: 'var(--serif)', fontWeight: 300, fontSize: '2.2rem', margin: '0 0 20px' }}>
-          {content?.heading ?? 'Say hello'}
+          {content?.heading || 'Say hello'}
         </h2>
         <p style={{ fontFamily: 'var(--serif)', fontSize: '1.1rem', lineHeight: 1.75, color: 'var(--bark)', maxWidth: '40ch' }}>
-          {content?.body ?? 'Based in Accra, taking bridal and editorial bookings, plus custom crochet commissions made to order.'}
+          {content?.body || 'Based in Accra, taking bridal and editorial bookings, plus custom crochet commissions made to order.'}
         </p>
         {socials.length > 0 && (
           <div style={{ display: 'flex', gap: 16, marginTop: 24 }}>

@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { createCrochetWork, getCrochetWork, updateCrochetWork } from '@/lib/queries/crochetWorks';
 import ImageUploader from '@/admin/components/ImageUploader';
 import TagInput from '@/admin/components/TagInput';
+import { deleteStoredImages } from '@/lib/storage';
 import type { WorkStatus, CrochetAvailability } from '@/types/enum';
 
 export default function NewCrochetPost() {
@@ -20,6 +21,8 @@ export default function NewCrochetPost() {
   const [date, setDate] = useState('');
   const [featured, setFeatured] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [originalImages, setOriginalImages] = useState<string[]>([]);
 
   useEffect(() => {
     if (!id) return;
@@ -32,6 +35,7 @@ export default function NewCrochetPost() {
       setPriceNote(work.price_note ?? '');
       setDescription(work.description ?? '');
       setImages(work.images);
+      setOriginalImages(work.images);
       setTags(work.tags);
       setDate(work.date ?? '');
       setFeatured(work.featured);
@@ -39,7 +43,12 @@ export default function NewCrochetPost() {
   }, [id]);
 
   async function save(status: WorkStatus) {
+    if (!title.trim()) {
+      setError('Please give this post a title.');
+      return;
+    }
     setSaving(true);
+    setError(null);
     const payload = {
       title,
       materials: materials || null,
@@ -59,7 +68,11 @@ export default function NewCrochetPost() {
       } else {
         await createCrochetWork(payload);
       }
+      // Photos she removed while editing are deleted from Storage too
+      await deleteStoredImages(originalImages.filter((u) => !images.includes(u)));
       navigate('/admin');
+    } catch (err) {
+      setError(err instanceof Error ? `Could not save: ${err.message}` : 'Could not save');
     } finally {
       setSaving(false);
     }
@@ -76,7 +89,7 @@ export default function NewCrochetPost() {
         <Field label="Materials"><input value={materials} onChange={(e) => setMaterials(e.target.value)} placeholder="e.g. cotton yarn, wood handles" style={inputStyle} /></Field>
 
         <div style={{ gridColumn: '1/-1' }}>
-          <Field label="Images"><ImageUploader images={images} onChange={setImages} /></Field>
+          <Field label="Images"><ImageUploader images={images} onChange={setImages} bucket="crochet-images" /></Field>
         </div>
 
         <div style={{ gridColumn: '1/-1' }}>
@@ -106,6 +119,8 @@ export default function NewCrochetPost() {
           </select>
         </Field>
       </div>
+
+      {error && <p style={{ color: 'var(--rust-bold)', fontSize: '0.88rem', marginTop: 18 }}>{error}</p>}
 
       <div style={{ display: 'flex', gap: 12, marginTop: 26 }}>
         <button type="button" disabled={saving} onClick={() => save('draft')} className="btn btn-line">Save as draft</button>

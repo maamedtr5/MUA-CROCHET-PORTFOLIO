@@ -39,10 +39,10 @@ export default function Home() {
       >
         <div style={{ maxWidth: 640 }}>
           <h1 style={{ fontFamily: 'var(--serif)', fontWeight: 300, fontSize: 'clamp(2.6rem, 5.6vw, 4.6rem)', lineHeight: 1.02, margin: '0 0 28px' }}>
-            {intro?.heading ?? 'Two crafts, one hand'}
+            {intro?.heading || 'Two crafts, one hand'}
           </h1>
           <p style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: '1.28rem', lineHeight: 1.65, color: 'var(--bark)', maxWidth: '46ch', margin: '0 0 34px' }}>
-            {intro?.body ?? "Makeup that catches light the way it's meant to, and crochet built stitch by stitch to last."}
+            {intro?.body || "Makeup that catches light the way it's meant to, and crochet built stitch by stitch to last."}
           </p>
           <Link to="/portfolio" className="btn btn-fill">View the work</Link>
         </div>

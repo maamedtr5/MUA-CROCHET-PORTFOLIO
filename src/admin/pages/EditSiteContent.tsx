@@ -4,11 +4,11 @@ import { listSocialLinks, createSocialLink, deleteSocialLink } from '@/lib/queri
 import { getContactFormConfig, updateContactFormConfig } from '@/lib/queries/contactSubmissions';
 import ImageUploader from '@/admin/components/ImageUploader';
 import type { SiteContentSection, SocialLink } from '@/types/content';
-import type {  } from '@/types/content';
 const SECTIONS: { key: SiteContentSection; label: string }[] = [
   { key: 'homepage_intro', label: 'Homepage intro' },
   { key: 'about', label: 'About' },
   { key: 'contact_info', label: 'Contact info' },
+  { key: 'background', label: 'Site background picture' },
 ];
 
 export default function EditSiteContent() {
@@ -29,39 +29,64 @@ function SiteContentEditor({ section, label }: { section: SiteContentSection; la
   const [image, setImage] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const isBackground = section === 'background';
 
   useEffect(() => {
-    getSiteContent(section).then((c) => {
-      if (!c) return;
-      setHeading(c.heading ?? '');
-      setBody(c.body ?? '');
-      setImage(c.image);
-    });
+    getSiteContent(section)
+      .then((c) => {
+        if (!c) return;
+        setHeading(c.heading ?? '');
+        setBody(c.body ?? '');
+        setImage(c.image);
+      })
+      .catch((err) => setError(err instanceof Error ? err.message : 'Could not load'));
   }, [section]);
 
   async function save() {
     setSaving(true);
     setSaved(false);
-    await updateSiteContent(section, { heading, body, image });
-    setSaving(false);
-    setSaved(true);
+    setError(null);
+    try {
+      await updateSiteContent(section, { heading, body, image });
+      setSaved(true);
+    } catch (err) {
+      setError(err instanceof Error ? `Could not save: ${err.message}` : 'Could not save');
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
     <div className="admin-panel" style={panelStyle}>
       <h2 style={headingStyle}>{label}</h2>
-      <div style={{ marginBottom: 18 }}>
-        <label style={labelStyle}>Heading</label>
-        <input value={heading} onChange={(e) => setHeading(e.target.value)} style={inputStyle} />
-      </div>
-      <div style={{ marginBottom: 18 }}>
-        <label style={labelStyle}>Body</label>
-        <textarea rows={4} value={body} onChange={(e) => setBody(e.target.value)} style={inputStyle} />
-      </div>
-      <div style={{ marginBottom: 18 }}>
-        <label style={labelStyle}>Image (optional)</label>
-        <ImageUploader images={image ? [image] : []} onChange={(imgs) => setImage(imgs[imgs.length - 1] ?? null)} />
-      </div>
+      {isBackground ? (
+        <p style={{ fontSize: '0.85rem', color: 'var(--bark-soft)', margin: '0 0 18px' }}>
+          Shown behind the whole public site, turned into a green tone automatically. Leave empty to use a photo from your portfolio.
+        </p>
+      ) : (
+        <>
+          <div style={{ marginBottom: 18 }}>
+            <label style={labelStyle}>Heading</label>
+            <input value={heading} onChange={(e) => { setHeading(e.target.value); setSaved(false); }} style={inputStyle} />
+          </div>
+          <div style={{ marginBottom: 18 }}>
+            <label style={labelStyle}>Body</label>
+            <textarea rows={4} value={body} onChange={(e) => { setBody(e.target.value); setSaved(false); }} style={inputStyle} />
+          </div>
+        </>
+      )}
+      {(isBackground || section === 'about') && (
+        <div style={{ marginBottom: 18 }}>
+          <label style={labelStyle}>{isBackground ? 'Background picture' : 'Image (optional)'}</label>
+          <ImageUploader
+            bucket="site-images"
+            images={image ? [image] : []}
+            onChange={(imgs) => { setImage(imgs[imgs.length - 1] ?? null); setSaved(false); }}
+          />
+        </div>
+      )}
+      {error && <p style={{ color: 'var(--rust-bold)', fontSize: '0.88rem', margin: '0 0 14px' }}>{error}</p>}
       <button type="button" onClick={save} disabled={saving} className="btn btn-fill">
         {saving ? 'Saving…' : saved ? 'Saved ✓' : 'Save'}
       </button>
@@ -75,7 +100,7 @@ function SocialLinksEditor() {
   const [url, setUrl] = useState('');
 
   function refresh() {
-    listSocialLinks().then(setLinks);
+    listSocialLinks().then(setLinks).catch(() => {});
   }
 
   useEffect(refresh, []);
@@ -114,6 +139,7 @@ function SocialLinksEditor() {
 function ContactFieldsEditor() {
   const [fields, setFields] = useState<{ key: string; label: string; type: string; required: boolean }[]>([]);
   const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   useEffect(() => {
     getContactFormConfig().then((c) => {
@@ -135,8 +161,14 @@ function ContactFieldsEditor() {
 
   async function save() {
     setSaving(true);
-    await updateContactFormConfig(fields);
-    setSaving(false);
+    try {
+      await updateContactFormConfig(fields);
+      setSaved(true);
+    } catch (err) {
+      window.alert(err instanceof Error ? `Could not save: ${err.message}` : 'Could not save');
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
@@ -160,7 +192,7 @@ function ContactFieldsEditor() {
       ))}
       <div style={{ display: 'flex', gap: 12, marginTop: 16 }}>
         <button type="button" onClick={addField} className="btn btn-line">+ Add field</button>
-        <button type="button" onClick={save} disabled={saving} className="btn btn-fill">{saving ? 'Saving…' : 'Save fields'}</button>
+        <button type="button" onClick={save} disabled={saving} className="btn btn-fill">{saving ? 'Saving…' : saved ? 'Saved ✓' : 'Save fields'}</button>
       </div>
     </div>
   );

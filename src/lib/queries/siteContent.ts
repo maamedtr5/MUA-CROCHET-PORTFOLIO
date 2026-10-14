@@ -20,14 +20,15 @@ export async function listAllSiteContent(): Promise<SiteContent[]> {
   return data ?? [];
 }
 
+// Upsert, not update: if the row doesn't exist yet an UPDATE silently matches
+// nothing (that was the "About won't save" bug). Upsert creates it on first save.
 export async function updateSiteContent(
   section: SiteContentSection,
   changes: Partial<Pick<SiteContent, 'heading' | 'body' | 'image'>>
 ): Promise<SiteContent> {
   const { data, error } = await supabase
     .from('site_content')
-    .update(changes)
-    .eq('section', section)
+    .upsert({ section, ...changes }, { onConflict: 'section' })
     .select()
     .single();
   if (error) throw error;

@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
+import DuotoneBackground from '@/components/DuotoneBackground';
 import Home from '@/pages/Home';
 import About from '@/pages/About';
 import Portfolio from '@/pages/Portfolio';
@@ -13,14 +14,16 @@ import NewMakeupPost from '@/admin/pages/NewMakeupPost';
 import NewCrochetPost from '@/admin/pages/NewCrochetPost';
 import EditSiteContent from '@/admin/pages/EditSiteContent';
 import Submissions from '@/admin/pages/Submissions';
+import WorksList from '@/admin/pages/WorksList';
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <div className="public-site">
+      <DuotoneBackground />
       <Nav />
       {children}
       <Footer />
-    </>
+    </div>
   );
 }
 
@@ -45,6 +48,7 @@ export default function App() {
             </AdminRoute>
           }
         >
+          <Route index element={<WorksList />} />
           <Route path="makeup/new" element={<NewMakeupPost />} />
           <Route path="makeup/:id/edit" element={<NewMakeupPost />} />
           <Route path="crochet/new" element={<NewCrochetPost />} />

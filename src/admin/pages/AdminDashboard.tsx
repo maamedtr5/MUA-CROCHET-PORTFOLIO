@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { listAllMakeupWorksAdmin } from '@/lib/queries/makeupWorks';
 import { listAllCrochetWorksAdmin } from '@/lib/queries/crochetWorks';
@@ -15,6 +15,7 @@ const navItems = [
 
 export default function AdminDashboard() {
   const { signOut } = useAuth();
+  const { pathname } = useLocation();
   const [counts, setCounts] = useState({ published: 0, drafts: 0, submissions: 0 });
 
   useEffect(() => {
@@ -28,7 +29,7 @@ export default function AdminDashboard() {
         });
       })
       .catch(() => {});
-  }, []);
+  }, [pathname]);
 
   return (
     <div className="admin-shell">

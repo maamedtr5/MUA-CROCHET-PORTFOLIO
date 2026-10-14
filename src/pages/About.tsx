@@ -18,10 +18,10 @@ export default function About() {
       )}
       <div>
         <h2 style={{ fontFamily: 'var(--serif)', fontWeight: 300, fontSize: 'clamp(1.8rem,3vw,2.4rem)', margin: '0 0 24px', lineHeight: 1.15 }}>
-          {content?.heading ?? 'The artist'}
+          {content?.heading || 'The artist'}
         </h2>
         <p style={{ fontFamily: 'var(--serif)', fontSize: '1.18rem', lineHeight: 1.85, color: 'var(--bark)', maxWidth: '52ch' }}>
-          {content?.body ?? 'Bio goes here — editable from the admin dashboard.'}
+          {content?.body || 'Bio goes here — editable from the admin dashboard.'}
         </p>
       </div>
     </section>

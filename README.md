@@ -5,10 +5,7 @@ MUA + Crochet portfolio, per the project SRS. React + Vite + TypeScript, Supabas
 ## 1. Set up Supabase
 
 1. Create a project at supabase.com.
-2. In the SQL editor, run the three migrations **in order** from `supabase/migrations/`:
-   - `0001_initial_schema.sql` — tables, triggers, seed rows
-   - `0002_rls_policies.sql` — row-level security
-   - `0003_storage_buckets.sql` — `work-images` and `site-images` buckets
+2. Apply every file in `supabase/migrations/` in filename order (`supabase db push`, or paste them into the SQL editor). The newest one, `20261012000000_fix_images_content_email.sql`, adds the `site-images` bucket, seeds the About/Homepage/Contact/Background rows and adds the `email_error` column. Buckets used: `makeup-images`, `crochet-images`, `site-images`.
 3. In **Authentication → Users**, manually create the single admin account (email + password) — there is no public sign-up flow anywhere in this app.
 4. In **Project Settings → API**, copy the Project URL and `anon` public key.
 
@@ -24,15 +21,16 @@ The public site runs at `/`. The admin dashboard is at `/admin` — log in with 
 
 ## 3. Contact form email (Edge Function)
 
-The contact form doesn't write to the database directly — it calls the `send-contact-email` Edge Function, which writes the row with the service role key and emails you via Resend.
+The contact form doesn't write to the database directly — it calls the `send-contact-email` Edge Function, which writes the row with the service role key and emails her via Brevo.
 
 ```bash
+supabase secrets set BREVO_API_KEY=your_brevo_api_key
+supabase secrets set CONTACT_TO_EMAIL=artist@herinbox.com
+supabase secrets set CONTACT_FROM_EMAIL=artist@herinbox.com   # must be a sender verified in Brevo
 supabase functions deploy send-contact-email
-supabase secrets set RESEND_API_KEY=your_resend_key
-supabase secrets set ADMIN_NOTIFY_EMAIL=you@youremail.com
 ```
 
-Update the `from` address in `supabase/functions/send-contact-email/index.ts` once you've verified a sending domain in Resend — `onboarding@resend.dev` only works for testing.
+In Brevo: create an account, go to **Senders, Domains & Dedicated IPs → Senders → Add a sender** and confirm the link Brevo emails her; then **SMTP & API → API Keys → Generate**. Messages arrive in the `CONTACT_TO_EMAIL` inbox with the visitor's address as Reply-To. If an email fails, the reason is shown under "Failed" on the admin Submissions page.
 
 ## 4. Deploy
 
