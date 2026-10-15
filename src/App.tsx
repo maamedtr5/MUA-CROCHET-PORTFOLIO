@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
-import DuotoneBackground from '@/components/DuotoneBackground';
 import Home from '@/pages/Home';
 import About from '@/pages/About';
 import Portfolio from '@/pages/Portfolio';
@@ -18,12 +17,11 @@ import WorksList from '@/admin/pages/WorksList';
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="public-site">
-      <DuotoneBackground />
+    <>
       <Nav />
       {children}
       <Footer />
-    </div>
+    </>
   );
 }
 

@@ -8,7 +8,6 @@ const SECTIONS: { key: SiteContentSection; label: string }[] = [
   { key: 'homepage_intro', label: 'Homepage intro' },
   { key: 'about', label: 'About' },
   { key: 'contact_info', label: 'Contact info' },
-  { key: 'background', label: 'Site background picture' },
 ];
 
 export default function EditSiteContent() {
